@@ -1,0 +1,40 @@
+
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./_docker/conf/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    container_name: project_nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: _docker/conf/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    container_name: project_app
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: example_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+        - ./pg-data:/var/lib/postgresql/data/
+        - ./_docker/conf/db/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+        - ./_docker/conf/db/extension-uuid.sql:/docker-entrypoint-initdb.d/extension-uuid.sql
+    ports:
+      - "5432:5432"
+    container_name: project_db
