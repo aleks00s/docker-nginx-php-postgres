@@ -33,8 +33,6 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
         - ./pg-data:/var/lib/postgresql/data/
-        - ./_docker/conf/db/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
-        - ./_docker/conf/db/extension-uuid.sql:/docker-entrypoint-initdb.d/extension-uuid.sql
     ports:
       - "5432:5432"
     container_name: project_db

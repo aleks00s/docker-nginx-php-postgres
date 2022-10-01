@@ -24,6 +24,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
+#Install node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
+
+
 COPY --chown=www-data:www-data . /var/www
 RUN chown -R www-data:www-data /var/www
 
